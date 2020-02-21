@@ -19,5 +19,9 @@
 	<classpathentry kind="lib" path="C:/Users/VC/Downloads/jar_files (5)/rest-assured-common-3.0.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/VC/Downloads/jar_files (5)/tagsoup-1.2.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/VC/Downloads/jar_files (5)/xml-path-3.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/VC/Downloads/xmlbeans-2.6.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/VC/Downloads/poi-ooxml-schemas-3.17.jar"/>
+	<classpathentry kind="lib" path="C:/Users/VC/Downloads/poi-ooxml-3.17.jar"/>
+	<classpathentry kind="lib" path="C:/Users/VC/Downloads/poi-3.17.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
