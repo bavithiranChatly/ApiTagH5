@@ -30,6 +30,8 @@ public class ApiTagH5Class {
 
 	String TagIdValue;
 	String OpenIdValue;
+	String ValueResponse = "Null";
+	int StatusCode = 0;
 
 	private final CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -37,17 +39,17 @@ public class ApiTagH5Class {
 		// TODO Auto-generated method stub
 
 		// ReadExcelDetails
-		ExcelReadDetails();
+		ReadExcelClass.ExcelReadDetails();
 
 	}
 
 	// Close the HttpClient Conn
-	private void close() throws IOException {
+	protected void close() throws IOException {
 		httpClient.close();
 	}
 
 	// To Run the Post Value
-	private void sendPost(String TagIdValue, String OpenIdValue) throws Exception {
+	protected void sendPost(String TagIdValue, String OpenIdValue) throws Exception {
 
 		Properties Apiobj = new Properties();
 
@@ -76,127 +78,35 @@ public class ApiTagH5Class {
 				CloseableHttpResponse response = httpClient.execute(post)) {
 
 			System.out.println(EntityUtils.toString(response.getEntity()));
+			//String ValueResponse = EntityUtils.toString(response.getEntity());
+
 			
-			String ResponseString = response.getEntity().toString();
+		    StatusCode = response.getStatusLine().getStatusCode();
 			
-			//System.out.println("Value in String "  +ResponseString);
-
-		}
-
-	}
-
-	// Read the Excel data
-	public void ReadExcel(String filePath, String fileName, String sheetName) throws Exception {
-
-		// Create an object of File class to open xlsx file
-
-		File file = new File(filePath + "\\" + fileName);
-
-		// Create an object of FileInputStream class to read excel file
-
-		FileInputStream inputStream = new FileInputStream(file);
-
-		Workbook ReadWorkbook = null;
-
-		// Find the file extension by splitting file name in substring and getting only
-		// extension name
-
-		String fileExtensionName = fileName.substring(fileName.indexOf("."));
-
-		// Check condition if the file is xlsx file
-
-		if (fileExtensionName.equals(".xlsx")) {
-
-			// If it is xlsx file then create object of XSSFWorkbook class
-
-			ReadWorkbook = new XSSFWorkbook(inputStream);
-
-		}
-
-		// Check condition if the file is xls file
-
-		else if (fileExtensionName.equals(".xls")) {
-
-			// If it is xls file then create object of HSSFWorkbook class
-
-			ReadWorkbook = new HSSFWorkbook(inputStream);
-
-		}
-
-		// Read sheet inside the workbook by its name
-
-		Sheet ReadSheet = ReadWorkbook.getSheet(sheetName);
-
-		// Find number of rows in excel file
-
-		int rowCount = ReadSheet.getLastRowNum() - ReadSheet.getFirstRowNum();
-
-		// Create a loop over all the rows of excel file to read it
-
-		for (int i = 0; i < rowCount + 1; i++) {
-
-			Row row = ReadSheet.getRow(i);
-
-			// Create a loop to print cell values in a row
-
-			for (int j = 0; j < row.getLastCellNum(); j++) {
-
-				// Print Excel data in console
-
-				System.out.print(row.getCell(j).getStringCellValue() + "|| ");
-
-				if (j == 0) {
-					System.out.println("Tag");
-					TagIdValue = row.getCell(j).getStringCellValue().toString();
-				}
-				if (j == 1) {
-					System.out.println("OpenId");
-					OpenIdValue = row.getCell(j).getStringCellValue().toString();
-				}
-
+			System.out.println("StatusCode Value" + "" + "=" +StatusCode);
+			
+			if(StatusCode == 200)
+			{
+				ValueResponse = "200 OK: {\"status\": \" Ok \", \"message\" : \" Successfully submitted \"}";
 			}
-
-			ApiTagH5Class obj = new ApiTagH5Class();
-
-			try {
-
-				System.out.println("Testing 2 - Send Http POST request");
-
-				obj.sendPost(TagIdValue, OpenIdValue);
-				
-			} finally {
-				
-				obj.close();
-				
+			else if(StatusCode == 400)
+			{
+				ValueResponse = "400 BadRequest: {\"status\": \" Error\", \"message\" : \" TagId not found/Invalid OpenId/Invalid Accesstoken \"}";
 			}
-			System.out.println();
+			else if(StatusCode == 200 && StatusCode == 400)
+			{
+				ValueResponse = "Sorry there is no excepted Error Code";
+			}
+			else if(StatusCode == 0)
+			{
+				ValueResponse = "Api Hasn't processed";
+			}
+			
+			// Accessing HaspMapWriteClass to send to data to write in excel sheet
+			HaspMapWriteClass.HaspPutData(TagIdValue, OpenIdValue,ValueResponse);
+
 		}
-
-		// Exce the main function
-
-	}
-
-	// Event Details
-	private static void ExcelReadDetails() throws Exception {
-
-		ApiTagH5Class ReadobjFile = new ApiTagH5Class();
-
-		// Prepare the path of excel file
-
-		String filePath = System.getProperty("user.dir");
 		
-		Properties Apiobj = new Properties();
-
-		FileInputStream Apiobjfile = new FileInputStream(System.getProperty("user.dir") + "\\application.properties");
-
-		Apiobj.load(Apiobjfile);
-
-		String ExcelFileName = Apiobj.getProperty("ExcelFileName");
-		String ExcelSheetName = Apiobj.getProperty("ExcelSheetName");
-		
-		
-
-		ReadobjFile.ReadExcel(filePath,ExcelFileName,ExcelSheetName);
 
 	}
 
