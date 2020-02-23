@@ -26,7 +26,8 @@ public class HaspMapWriteClass {
 		// To generate uniqueId to generate for haspmap
 		String uniqueID = UUID.randomUUID().toString();
 
-		data.put(uniqueID, new Object[] { TagIdValue, OpenIdValue, Response });
+		data.put(uniqueID,
+				new Object[] { uniqueID, CommonUtils.getCurrentDateAndTime(), TagIdValue, OpenIdValue, Response });
 
 		System.out.println("HaspMap Value has been put successfully" + "" + "=" + uniqueID);
 
@@ -41,8 +42,8 @@ public class HaspMapWriteClass {
 		Apiobj.load(Apiobjfile);
 
 		String WriteExcelFileName = Apiobj.getProperty("ResultExcelFileName");
-		String ResultSheetName    = Apiobj.getProperty("ResultSheetName");
-		
+		String ResultSheetName = Apiobj.getProperty("ResultSheetName");
+
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		HSSFSheet sheet = workbook.createSheet(ResultSheetName);
 		Set<String> keyset = data.keySet();
