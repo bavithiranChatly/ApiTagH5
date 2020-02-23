@@ -36,6 +36,21 @@ public class ReadExcelClass extends ApiTagH5Class {
 	public void ReadExcel(String filePath, String fileName, String sheetName) throws Exception {
 
 		// Create an object of File class to open xlsx file
+		
+		Properties Apiobj = new Properties();
+
+		FileInputStream Apiobjfile = new FileInputStream(System.getProperty("user.dir") + "\\application.properties");
+
+		Apiobj.load(Apiobjfile);
+
+		String AccountNameValue = Apiobj.getProperty("AccountName");
+		String TagidValue = Apiobj.getProperty("TagIdValue");
+		String OpenidValue = Apiobj.getProperty("OpenIdValue");
+		
+		int intAccountName   = CommonUtils.getStringToint(AccountNameValue);
+		int intTagid       = CommonUtils.getStringToint(TagidValue);
+		int intOpenidValue = CommonUtils.getStringToint(OpenidValue);
+
 
 		File file = new File(filePath + "\\" + fileName);
 
@@ -83,7 +98,7 @@ public class ReadExcelClass extends ApiTagH5Class {
 		for (int i = 0; i < rowCount + 1; i++) {
 
 			Row row = ReadSheet.getRow(i);
-
+			
 			// Create a loop to print cell values in a row
 
 			for (int j = 0; j < row.getLastCellNum(); j++) {
@@ -92,11 +107,16 @@ public class ReadExcelClass extends ApiTagH5Class {
 
 				System.out.print(row.getCell(j).getStringCellValue() + "|| ");
 
-				if (j == 0) {
+				if (j == intAccountName) {
+					System.out.println("AccountName");
+					AccountName =  row.getCell(j).getStringCellValue().toString();
+				}
+
+				if (j == intTagid) {
 					System.out.println("Tag");
 					TagIdValue = row.getCell(j).getStringCellValue().toString();
 				}
-				if (j == 1) {
+				if (j == intOpenidValue) {
 					System.out.println("OpenId");
 					OpenIdValue = row.getCell(j).getStringCellValue().toString();
 				}
@@ -109,7 +129,7 @@ public class ReadExcelClass extends ApiTagH5Class {
 
 				System.out.println("Testing 2 - Send Http POST request");
 
-				obj.sendPost(TagIdValue, OpenIdValue);
+				obj.sendPost(AccountName,TagIdValue, OpenIdValue);
 
 			} finally {
 

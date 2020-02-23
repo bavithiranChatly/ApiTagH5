@@ -21,13 +21,13 @@ public class HaspMapWriteClass {
 
 	static Map<String, Object[]> data = new LinkedHashMap<String, Object[]>();
 
-	public static void HaspPutData(String TagIdValue, String OpenIdValue, String Response) throws Exception {
+	public static void HaspPutData(String AccountNameValue,String TagIdValue, String OpenIdValue, String Response) throws Exception {
 
 		// To generate uniqueId to generate for haspmap
-		String uniqueID = UUID.randomUUID().toString();
+		String uniqueID = CommonUtils.getUniqueID();
 
 		data.put(uniqueID,
-				new Object[] { uniqueID, CommonUtils.getCurrentDateAndTime(), TagIdValue, OpenIdValue, Response });
+				new Object[] { uniqueID,AccountNameValue, CommonUtils.getCurrentDateAndTime(), TagIdValue, OpenIdValue, Response });
 
 		System.out.println("HaspMap Value has been put successfully" + "" + "=" + uniqueID);
 

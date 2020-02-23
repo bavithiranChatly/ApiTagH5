@@ -29,8 +29,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class ApiTagH5Class {
 
 	String TagIdValue;
-	String OpenIdValue;
+	String OpenIdValue = "Null";
 	String ValueResponse = "Null";
+	String AccountName = "Null" ;
 	int StatusCode = 0;
 
 	private final CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -49,7 +50,7 @@ public class ApiTagH5Class {
 	}
 
 	// To Run the Post Value
-	protected void sendPost(String TagIdValue, String OpenIdValue) throws Exception {
+	protected void sendPost(String AccountNameValue ,String TagIdValue, String OpenIdValue) throws Exception {
 
 		Properties Apiobj = new Properties();
 
@@ -103,7 +104,7 @@ public class ApiTagH5Class {
 			}
 			
 			// Accessing HaspMapWriteClass to send to data to write in excel sheet
-			HaspMapWriteClass.HaspPutData(TagIdValue, OpenIdValue,ValueResponse);
+			HaspMapWriteClass.HaspPutData(AccountNameValue,TagIdValue, OpenIdValue,ValueResponse);
 
 		}
 		
